@@ -39,7 +39,16 @@ app.get("/users", async (req, res) => {
     const users = await User_model_1.User.find();
     res.json(users);
 });
-const PORT = 5200;
+app.post("/users", async (req, res) => {
+    const body = req.body;
+    console.log("TTTTEEEEEEESTTTTTTT");
+    const user = await User_model_1.User.create(body);
+    res.status(201).json({
+        message: "user created!",
+        data: user,
+    });
+});
+const PORT = 5300;
 app.listen(PORT, () => {
     mongoose.connect("mongodb://127.0.0.1:27017/sep-2022");
     console.log(`the server has started on port ${PORT}`);

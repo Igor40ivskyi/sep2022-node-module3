@@ -14,11 +14,21 @@ app.get("/welcome", (req: Request, res: Response) => {
 
 app.get("/users", async (req, res) => {
   const users = await User.find();
-
   res.json(users);
 });
 
-const PORT = 5200;
+app.post("/users", async (req, res) => {
+  const body = req.body;
+  console.log("TTTTEEEEEEESTTTTTTT");
+  const user = await User.create(body);
+
+  res.status(201).json({
+    message: "user created!",
+    data: user,
+  });
+});
+
+const PORT = 5300;
 
 app.listen(PORT, () => {
   mongoose.connect("mongodb://127.0.0.1:27017/sep-2022");

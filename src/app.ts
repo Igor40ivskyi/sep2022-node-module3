@@ -10,7 +10,9 @@ app.get('/welcome', (req, res) => {
 });
 
 
-
+app.get('/users', (req, res) => {
+    res.send('FUCK YOU!')
+});
 
 const PORT = 5100;
 

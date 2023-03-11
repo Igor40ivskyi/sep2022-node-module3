@@ -4,7 +4,7 @@ let app = express();
 
 
 app.get('/welcome', (req, res) => {
-    res.json('WELCOMEeeeeeeeeeeee');
+    res.send('WELCOME!!!!!!!!!!!!!!!!!!!')
 });
 
 

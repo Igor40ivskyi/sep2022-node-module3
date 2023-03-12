@@ -22,5 +22,7 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         enum: user_types_1.EGenders,
     },
+}, {
+    versionKey: false,
 });
 exports.User = (0, mongoose_1.model)("user", userSchema);

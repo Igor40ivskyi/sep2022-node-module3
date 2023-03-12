@@ -28,52 +28,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const mongoose = __importStar(require("mongoose"));
-const User_model_1 = require("./models/User.model");
+const userRouter_1 = require("./routers/userRouter");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-app.get("/welcome", (req, res) => {
-    res.json("WELCOMEeeeeeeeeeeee");
-});
-app.get("/users", async (req, res) => {
-    const users = await User_model_1.User.find();
-    return res.json(users);
-});
-app.get("/users/:userId", async (req, res) => {
-    const { userId } = req.params;
-    const user = await User_model_1.User.findById(userId);
-    return res.json(user);
-});
-app.post("/users", async (req, res) => {
-    try {
-        const body = req.body;
-        console.log("TTTTEEEEEEESTTTTTTT");
-        const user = await User_model_1.User.create(body);
-        res.status(201).json({
-            message: "user created!",
-            data: user,
-        });
-    }
-    catch (e) {
-        res.json({ message: e.message });
-    }
-});
-app.put("/users/:userId", async (req, res) => {
-    const { userId } = req.params;
-    const user = req.body;
-    const updatedUser = await User_model_1.User.updateOne({ _id: userId }, user);
-    res.status(203).json({
-        message: "user updated",
-        data: updatedUser,
-    });
-});
-app.delete("/users/:userId", async (req, res) => {
-    const { userId } = req.params;
-    await User_model_1.User.deleteOne({ _id: userId });
-    res.status(200).json({
-        message: "user deleted",
-    });
-});
+app.use("/users", userRouter_1.userRouter);
 const PORT = 5100;
 app.listen(PORT, () => {
     mongoose.connect("mongodb://127.0.0.1:27017/sep-2022");

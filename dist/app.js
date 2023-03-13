@@ -28,6 +28,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const mongoose = __importStar(require("mongoose"));
+const config_1 = require("./configs/config");
 const userRouter_1 = require("./routers/userRouter");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -40,8 +41,7 @@ app.use((err, req, res, next) => {
         status,
     });
 });
-const PORT = 5100;
-app.listen(PORT, () => {
-    mongoose.connect("mongodb://127.0.0.1:27017/sep-2022");
-    console.log(`the server has started on port ${PORT}`);
+app.listen(config_1.configs.PORT, () => {
+    mongoose.connect(config_1.configs.DB_URL);
+    console.log(`the server has started on port ${config_1.configs.PORT}`);
 });

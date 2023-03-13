@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import * as mongoose from "mongoose";
 
+import { configs } from "./configs/config";
 import { userRouter } from "./routers/userRouter";
 import { IError } from "./types/commonTypes";
 
@@ -20,9 +21,7 @@ app.use((err: IError, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-const PORT = 5100;
-
-app.listen(PORT, () => {
-  mongoose.connect("mongodb://127.0.0.1:27017/sep-2022");
-  console.log(`the server has started on port ${PORT}`);
+app.listen(configs.PORT, () => {
+  mongoose.connect(configs.DB_URL);
+  console.log(`the server has started on port ${configs.PORT}`);
 });

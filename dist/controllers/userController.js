@@ -3,39 +3,64 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userController = void 0;
 const User_model_1 = require("../models/User.model");
 class UserController {
-    async getAll(req, res) {
-        const users = await User_model_1.User.find();
-        return res.json(users);
+    async getAll(req, res, next) {
+        try {
+            const users = await User_model_1.User.find();
+            return res.json(users);
+        }
+        catch (e) {
+            next(e);
+        }
     }
-    async getById(req, res) {
-        const { userId } = req.params;
-        const user = await User_model_1.User.findById(userId);
-        return res.json(user);
+    async getById(req, res, next) {
+        try {
+            const { userId } = req.params;
+            const user = await User_model_1.User.findById(userId);
+            return res.json(user);
+        }
+        catch (e) {
+            next(e);
+        }
     }
-    async create(req, res) {
-        const body = req.body;
-        const user = await User_model_1.User.create(body);
-        return res.status(201).json({
-            message: "user created!",
-            data: user,
-        });
+    async create(req, res, next) {
+        try {
+            const body = req.body;
+            const user = await User_model_1.User.create(body);
+            return res.status(201).json({
+                message: "user created!",
+                data: user,
+            });
+        }
+        catch (e) {
+            next(e);
+        }
     }
-    async update(req, res) {
-        const { userId } = req.params;
-        const user = req.body;
-        const updatedUser = await User_model_1.User.updateOne({ _id: userId }, user);
-        return res.status(203).json({
-            message: "user updated",
-            data: updatedUser,
-        });
+    async update(req, res, next) {
+        try {
+            const { userId } = req.params;
+            const user = req.body;
+            const updatedUser = await User_model_1.User.updateOne({ _id: userId }, user);
+            return res.status(203).json({
+                message: "user updated",
+                data: updatedUser,
+            });
+        }
+        catch (e) {
+            next(e);
+        }
     }
-    async delete(req, res) {
-        const { userId } = req.params;
-        const user = await User_model_1.User.deleteOne({ _id: userId });
-        return res.status(200).json({
-            message: "user deleted",
-            data: user,
-        });
+    async delete(req, res, next) {
+        try {
+            const { userId } = req.params;
+            const user = await User_model_1.User.deleteOne({ _id: userId });
+            return res.status(200).json({
+                message: "user deleted",
+                data: user,
+            });
+        }
+        catch (e) {
+            next(e);
+        }
     }
 }
 exports.userController = new UserController();

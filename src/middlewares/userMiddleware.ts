@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
+import { ApiError } from "../errors/apiError";
 import { User } from "../models/User.model";
 
 class UserMiddleware {
@@ -14,12 +15,12 @@ class UserMiddleware {
       const user = await User.findById(userId);
 
       if (!user) {
-        throw new Error("user not found");
+        throw new ApiError("user not found", 404);
       }
 
       next();
     } catch (e) {
-      console.log(e);
+      next(e);
     }
   }
 }

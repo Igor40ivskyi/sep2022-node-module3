@@ -55,7 +55,7 @@ class UserController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<ICommonResponse<IUser>>> {
+  ): Promise<Response<IUser>> {
     try {
       const { userId } = req.params;
 
@@ -65,10 +65,7 @@ class UserController {
         { new: true }
       );
 
-      return res.status(203).json({
-        message: "user updated",
-        data: updatedUser,
-      });
+      return res.status(203).json(updatedUser);
     } catch (e) {
       next(e);
     }

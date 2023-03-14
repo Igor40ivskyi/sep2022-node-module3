@@ -38,10 +38,7 @@ class UserController {
         try {
             const { userId } = req.params;
             const updatedUser = await User_model_1.User.findByIdAndUpdate(userId, { ...req.body }, { new: true });
-            return res.status(203).json({
-                message: "user updated",
-                data: updatedUser,
-            });
+            return res.status(203).json(updatedUser);
         }
         catch (e) {
             next(e);

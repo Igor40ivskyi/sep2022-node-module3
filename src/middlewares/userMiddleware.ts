@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import { ApiError } from "../errors/apiError";
 import { User } from "../models/User.model";
+import { UserValidator } from "../validators";
 
 class UserMiddleware {
   public async getByIdThrow(
@@ -19,6 +20,23 @@ class UserMiddleware {
       }
 
       next();
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async isValidUserCreate(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { error, value } = UserValidator.createUser.validate(req.body);
+
+      if (error) {
+        return next(new ApiError(error.message, 400));
+      }
+      req.body = value;
     } catch (e) {
       next(e);
     }

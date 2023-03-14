@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import { User } from "../models/User.model";
-import { ICommonResponse, IMessage } from "../types/commonTypes";
+import { ICommonResponse } from "../types/commonTypes";
 import { IUser } from "../types/user.types";
 
 class UserController {
@@ -65,7 +65,7 @@ class UserController {
         { new: true }
       );
 
-      return res.status(203).json(updatedUser);
+      return res.status(201).json(updatedUser);
     } catch (e) {
       next(e);
     }
@@ -75,14 +75,11 @@ class UserController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<IMessage>> {
+  ): Promise<Response<void>> {
     try {
       const { userId } = req.params;
-      const user = await User.deleteOne({ _id: userId });
-      return res.status(200).json({
-        message: "user deleted",
-        data: user,
-      });
+      await User.deleteOne({ _id: userId });
+      return res.sendStatus(204);
     } catch (e) {
       next(e);
     }

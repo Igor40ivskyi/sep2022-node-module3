@@ -38,7 +38,7 @@ class UserController {
         try {
             const { userId } = req.params;
             const updatedUser = await User_model_1.User.findByIdAndUpdate(userId, { ...req.body }, { new: true });
-            return res.status(203).json(updatedUser);
+            return res.status(201).json(updatedUser);
         }
         catch (e) {
             next(e);
@@ -47,11 +47,8 @@ class UserController {
     async delete(req, res, next) {
         try {
             const { userId } = req.params;
-            const user = await User_model_1.User.deleteOne({ _id: userId });
-            return res.status(200).json({
-                message: "user deleted",
-                data: user,
-            });
+            await User_model_1.User.deleteOne({ _id: userId });
+            return res.sendStatus(204);
         }
         catch (e) {
             next(e);

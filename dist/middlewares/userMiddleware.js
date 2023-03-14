@@ -6,7 +6,7 @@ const apiError_1 = require("../errors/apiError");
 const User_model_1 = require("../models/User.model");
 const validators_1 = require("../validators");
 class UserMiddleware {
-    async getByIdThrow(req, res, next) {
+    async getByIdOrThrow(req, res, next) {
         try {
             const { userId } = req.params;
             const user = await User_model_1.User.findById(userId);

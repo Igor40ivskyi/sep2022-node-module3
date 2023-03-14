@@ -37,8 +37,7 @@ class UserController {
     async update(req, res, next) {
         try {
             const { userId } = req.params;
-            const user = req.body;
-            const updatedUser = await User_model_1.User.updateOne({ _id: userId }, user);
+            const updatedUser = await User_model_1.User.findByIdAndUpdate(userId, { ...req.body }, { new: true });
             return res.status(203).json({
                 message: "user updated",
                 data: updatedUser,

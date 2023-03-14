@@ -6,7 +6,7 @@ import { User } from "../models/User.model";
 import { UserValidator } from "../validators";
 
 class UserMiddleware {
-  public async getByIdThrow(
+  public async getByIdOrThrow(
     req: Request,
     res: Response,
     next: NextFunction

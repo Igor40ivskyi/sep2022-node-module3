@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
 import { User } from "../models/User.model";
-import { ICommonResponse, IUser } from "../types/user.types";
+import { ICommonResponse, IMessage } from "../types/commonTypes";
+import { IUser } from "../types/user.types";
 
 class UserController {
   public async getAll(
@@ -75,7 +76,7 @@ class UserController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<ICommonResponse<IUser>>> {
+  ): Promise<Response<IMessage>> {
     try {
       const { userId } = req.params;
       const user = await User.deleteOne({ _id: userId });

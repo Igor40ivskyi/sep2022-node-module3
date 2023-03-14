@@ -11,7 +11,4 @@ export interface IUser {
   gender: string;
 }
 
-export interface ICommonResponse<T> {
-  message: string;
-  data: T;
-}
+

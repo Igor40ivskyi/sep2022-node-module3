@@ -10,5 +10,3 @@ export interface IUser {
   password: string;
   gender: string;
 }
-
-

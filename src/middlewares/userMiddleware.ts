@@ -34,7 +34,7 @@ class UserMiddleware {
       const { error, value } = UserValidator.createUser.validate(req.body);
 
       if (error) {
-        return next(new ApiError(error.message, 400));
+        throw new ApiError(error.message, 400);
       }
       req.body = value;
     } catch (e) {

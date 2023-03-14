@@ -7,14 +7,9 @@ const router = Router();
 
 router.get("/", userController.getAll);
 
-router.post("/", userController.create);
+router.post("/", userMiddleware.isValidUserCreate, userController.create);
 
-router.get(
-  "/:userId",
-  userMiddleware.isValidUserCreate,
-  userMiddleware.getByIdThrow,
-  userController.getById
-);
+router.get("/:userId", userMiddleware.getByIdThrow, userController.getById);
 
 router.put("/:userId", userController.update);
 

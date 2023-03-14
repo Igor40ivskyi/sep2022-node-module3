@@ -22,7 +22,7 @@ class UserMiddleware {
         try {
             const { error, value } = validators_1.UserValidator.createUser.validate(req.body);
             if (error) {
-                return next(new apiError_1.ApiError(error.message, 400));
+                throw new apiError_1.ApiError(error.message, 400);
             }
             req.body = value;
         }

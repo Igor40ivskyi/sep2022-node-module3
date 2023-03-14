@@ -12,6 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/users", userRouter);
 
+//---------- ERROR HANDLER --------------
 app.use((err: IError, req: Request, res: Response, next: NextFunction) => {
   const status = err.status || 500;
 

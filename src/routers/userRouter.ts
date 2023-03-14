@@ -9,10 +9,15 @@ router.get("/", userController.getAll);
 
 router.post("/", userMiddleware.isValidUserCreate, userController.create);
 
-router.get("/:userId", userMiddleware.getByIdThrow, userController.getById);
+router.get(
+  "/:userId",
+  userMiddleware.isUserIdValid,
+  userMiddleware.getByIdThrow,
+  userController.getById
+);
 
-router.put("/:userId", userController.update);
+router.put("/:userId", userMiddleware.isUserIdValid, userController.update);
 
-router.delete("/:userId", userController.delete);
+router.delete("/:userId", userMiddleware.isUserIdValid, userController.delete);
 
 export const userRouter = router;

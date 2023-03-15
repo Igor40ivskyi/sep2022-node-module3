@@ -35,7 +35,7 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use("/users", userRouter_1.userRouter);
 app.use((err, req, res, next) => {
-    const status = err.status;
+    const status = err.status || 500;
     return res.status(status).json({
         message: err.message,
         status,

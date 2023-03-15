@@ -25,11 +25,7 @@ class UserController {
     next: NextFunction
   ): Promise<Response<IUser>> {
     try {
-      const { userId } = req.params;
-
-      const user = await User.findById(userId);
-
-      return res.json(user);
+      return res.json(res.locals.user);
     } catch (e) {
       next(e);
     }

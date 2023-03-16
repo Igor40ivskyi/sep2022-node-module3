@@ -3,6 +3,7 @@ import { isObjectIdOrHexString } from "mongoose";
 
 import { ApiError } from "../errors/apiError";
 import { User } from "../models/User.model";
+import { IRequest } from "../types/commonTypes";
 import { UserValidator } from "../validators";
 
 class UserMiddleware {
@@ -26,6 +27,30 @@ class UserMiddleware {
     }
   }
 
+  public getDynamicallyAndThrow(
+    fieldName: string,
+    from = "body",
+    dbField = fieldName
+  ) {
+    return async (req: IRequest, res: Response, next: NextFunction) => {
+      try {
+        const fieldValue = req[from][fieldName];
+
+        const user = await User.findOne({ [dbField]: fieldValue });
+        if (user) {
+          throw new ApiError(
+            `User with ${fieldName} ${fieldValue} already exsists `,
+            409
+          );
+        }
+        next();
+      } catch (e) {
+        next(e);
+      }
+    };
+  }
+
+  //Validators
   public async isValidUserCreate(
     req: Request,
     res: Response,

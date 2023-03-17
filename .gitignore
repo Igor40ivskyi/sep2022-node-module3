@@ -1,6 +1,7 @@
 .idea
 node-modules
 package-lock.json
+dist
 
 # Environment variables
 .env

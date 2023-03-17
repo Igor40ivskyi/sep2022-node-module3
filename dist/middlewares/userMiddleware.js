@@ -35,6 +35,22 @@ class UserMiddleware {
             }
         };
     }
+    getDynamicallyOrThrow(fieldName, from = "body", dbField = fieldName) {
+        return async (req, res, next) => {
+            try {
+                const fieldValue = req[from][fieldName];
+                const user = await User_model_1.User.findOne({ [dbField]: fieldValue });
+                if (!user) {
+                    throw new apiError_1.ApiError(`User not found `, 422);
+                }
+                req.res.locals = user;
+                next();
+            }
+            catch (e) {
+                next(e);
+            }
+        };
+    }
     async isValidUserCreate(req, res, next) {
         try {
             const { error, value } = validators_1.UserValidator.createUser.validate(req.body);

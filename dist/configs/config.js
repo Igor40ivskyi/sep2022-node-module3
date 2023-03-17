@@ -5,5 +5,5 @@ const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
 exports.configs = {
     PORT: process.env.PORT || 5001,
-    DB_URL: process.env.DB_URL || "skdfjlsdjfldsfj",
+    DB_URL: process.env.DB_URL || "skdfjlsdjfldsfjdfgfdg",
 };

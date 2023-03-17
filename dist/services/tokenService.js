@@ -22,30 +22,19 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserValidator = void 0;
-const Joi = __importStar(require("joi"));
-const constants_1 = require("../constants");
-const user_types_1 = require("../types/user.types");
-class UserValidator {
+exports.tokenService = void 0;
+const jwt = __importStar(require("jsonwebtoken"));
+const tokenConstants_1 = require("../constants/tokenConstants");
+class TokenService {
+    generateTokenPair(payload) {
+        const accessToken = jwt.sign(payload, tokenConstants_1.tokenConstants.ACCESS_SECRET, {
+            expiresIn: "15m",
+        });
+        const refreshToken = jwt.sign(payload, tokenConstants_1.tokenConstants.REFRESH_SECRET, {
+            expiresIn: "30d",
+        });
+        return { accessToken, refreshToken };
+    }
 }
-exports.UserValidator = UserValidator;
-_a = UserValidator;
-UserValidator.firstName = Joi.string().min(2).max(50);
-UserValidator.email = Joi.string()
-    .regex(constants_1.regexConstants.EMAIL)
-    .lowercase()
-    .trim();
-UserValidator.password = Joi.string().regex(constants_1.regexConstants.PASSWORD);
-UserValidator.gender = Joi.valid(...Object.values(user_types_1.EGenders));
-UserValidator.createUser = Joi.object({
-    name: _a.firstName.required(),
-    email: _a.email.required(),
-    password: _a.password.required(),
-    gender: _a.gender.required(),
-});
-UserValidator.updateUser = Joi.object({
-    name: _a.firstName,
-    gender: _a.gender,
-});
+exports.tokenService = new TokenService();

@@ -88,5 +88,17 @@ class UserMiddleware {
             next(e);
         }
     }
+    async isValidLogin(req, res, next) {
+        try {
+            const { error } = validators_1.UserValidator.loginUser.validate(req.body);
+            if (error) {
+                throw new apiError_1.ApiError(error.message, 400);
+            }
+            next();
+        }
+        catch (e) {
+            next(e);
+        }
+    }
 }
 exports.userMiddleware = new UserMiddleware();

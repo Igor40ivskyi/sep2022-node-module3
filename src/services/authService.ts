@@ -1,4 +1,5 @@
 import { ApiError } from "../errors/apiError";
+import { Token } from "../models/Token.model";
 import { User } from "../models/User.model";
 import { ITokenPair, IUser } from "../types";
 import { ICredentials } from "../types/authTypes";
@@ -36,6 +37,11 @@ class AuthService {
       const tokenPair = tokenService.generateTokenPair({
         name: user.name,
         id: user._id,
+      });
+
+      await Token.create({
+        _user_id: user._id,
+        ...tokenPair,
       });
 
       return tokenPair;

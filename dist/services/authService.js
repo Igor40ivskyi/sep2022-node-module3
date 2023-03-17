@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authService = void 0;
 const apiError_1 = require("../errors/apiError");
+const Token_model_1 = require("../models/Token.model");
 const User_model_1 = require("../models/User.model");
 const passwordService_1 = require("./passwordService");
 const tokenService_1 = require("./tokenService");
@@ -28,6 +29,10 @@ class AuthService {
             const tokenPair = tokenService_1.tokenService.generateTokenPair({
                 name: user.name,
                 id: user._id,
+            });
+            await Token_model_1.Token.create({
+                _user_id: user._id,
+                ...tokenPair,
             });
             return tokenPair;
         }

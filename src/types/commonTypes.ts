@@ -9,8 +9,3 @@ export interface IMessage {
 export interface ICommonResponse<T> extends IMessage {
   data: T;
 }
-
-interface IIndex {
-  [index: string]: any;
-}
-export type IRequest = IIndex;

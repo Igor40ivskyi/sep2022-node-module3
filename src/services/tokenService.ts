@@ -13,6 +13,7 @@ class TokenService {
     });
     return { accessToken, refreshToken };
   }
+  public checkToken (token)
 }
 
 export const tokenService = new TokenService();

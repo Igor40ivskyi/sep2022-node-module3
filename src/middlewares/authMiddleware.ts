@@ -20,7 +20,7 @@ class AuthMiddleware {
 
       const jwtPayload = tokenService.checkToken(accessToken);
 
-      const tokenInfo = await Token.findById({ accessToken });
+      const tokenInfo = await Token.findOne({ accessToken });
 
       if (!tokenInfo) {
         throw new ApiError("Token is not valid", 401);
@@ -50,7 +50,7 @@ class AuthMiddleware {
         ETokenType.refresh
       );
 
-      const tokenInfo = await Token.findById({ refreshToken });
+      const tokenInfo = await Token.findOne({ refreshToken });
 
       if (!tokenInfo) {
         throw new ApiError("Token is not valid", 401);

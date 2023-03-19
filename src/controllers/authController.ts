@@ -41,7 +41,6 @@ class AuthController {
       const tokenPair = await authService.refresh(tokenInfo, jwtPayload);
 
       return res.status(200).json(tokenPair);
-
     } catch (e) {
       next(e);
     }

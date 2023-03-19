@@ -3,6 +3,7 @@ import { isObjectIdOrHexString } from "mongoose";
 
 import { ApiError } from "../errors";
 import { User } from "../models";
+import { IUser } from "../types";
 import { UserValidator } from "../validators";
 
 class UserMiddleware {
@@ -29,7 +30,7 @@ class UserMiddleware {
   public getDynamicallyAndThrow(
     fieldName: string,
     from: "body" | "query" | "params" = "body",
-    dbField = fieldName
+    dbField: keyof IUser = "email"
   ) {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
@@ -52,7 +53,7 @@ class UserMiddleware {
   public getDynamicallyOrThrow(
     fieldName: string,
     from: "body" | "query" | "params" = "body",
-    dbField = fieldName
+    dbField: keyof IUser = "email"
   ) {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {

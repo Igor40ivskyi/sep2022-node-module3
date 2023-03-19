@@ -2,6 +2,7 @@ import * as jwt from "jsonwebtoken";
 
 import { tokenConstants } from "../constants/tokenConstants";
 import { ITokenPair, ITokenPayload } from "../types";
+import { ApiError } from "../errors/apiError";
 
 class TokenService {
   public generateTokenPair(payload: ITokenPayload): ITokenPair {
@@ -13,7 +14,14 @@ class TokenService {
     });
     return { accessToken, refreshToken };
   }
-  public checkToken (token)
+
+  public checkToken(token, tokenType = "") {
+    try {
+      
+    }catch (e) {
+      throw new ApiError("token is not valid", 401);
+    }
+  }
 }
 
 export const tokenService = new TokenService();

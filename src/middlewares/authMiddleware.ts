@@ -30,21 +30,25 @@ class AuthMiddleware {
     }
   }
 
-    public async checkRefreshToken(req: Request, res: Response, next: NextFunction): Promise<void> {
-      try {
-          const refreshToken = req.get("Authorization");
+  public async checkRefreshToken(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const refreshToken = req.get("Authorization");
 
-          if (!refreshToken) {
-              throw new ApiError("no token", 401);
-          }
-
-          await Token.findOne()
-
-          next();
-      }catch (e) {
-          next(e)
+      if (!refreshToken) {
+        throw new ApiError("no token", 401);
       }
+
+      await Token.findOne();
+
+      next();
+    } catch (e) {
+      next(e);
     }
+  }
 }
 
 export const authMiddleware = new AuthMiddleware();

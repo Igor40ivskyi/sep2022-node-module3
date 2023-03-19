@@ -27,6 +27,7 @@ class AuthMiddleware {
       }
 
       req.res.locals = { tokenInfo, jwtPayload };
+
       next();
     } catch (e) {
       next(e);

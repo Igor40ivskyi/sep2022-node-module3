@@ -22,10 +22,12 @@ class TokenService {
   ): ITokenPayload {
     try {
       let secret = "";
+
       switch (tokenType) {
         case ETokenType.access:
           secret = configs.ACCESS_SECRET;
           break;
+
         case ETokenType.refresh:
           secret = configs.REFRESH_SECRET;
           break;

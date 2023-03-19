@@ -1,18 +1,18 @@
 import express, { NextFunction, Request, Response } from "express";
 import * as mongoose from "mongoose";
 
-import { configs } from "./configs/config";
-import { authRouter } from "./routers/authRouter";
-import { userRouter } from "./routers/userRouter";
-import { IError } from "./types/commonTypes";
+import { configs } from "./configs";
+import { authRouter } from "./routers";
+import { userRouter } from "./routers";
+import { IError } from "./types";
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/users", userRouter);
 app.use("/auth", authRouter);
+app.use("/users", userRouter);
 
 //---------- ERROR HANDLER --------------
 app.use((err: IError, req: Request, res: Response, next: NextFunction) => {

@@ -3,6 +3,7 @@ import { Token } from "../models";
 import { User } from "../models";
 import { ITokenPair, ITokenPayload, IUser } from "../types";
 import { ICredentials } from "../types";
+import { emailService } from "./emailService";
 import { passwordService } from "./passwordService";
 import { tokenService } from "./tokenService";
 
@@ -15,6 +16,7 @@ class AuthService {
         ...body,
         password: hashedPassword,
       });
+      await emailService.sendMail("ihor.sorokivskyi.xt.2017@lpnu.ua");
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }

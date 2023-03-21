@@ -1,10 +1,10 @@
-import {ApiError} from "../errors";
-import {Token, User} from "../models";
-import {ICredentials, ITokenPair, ITokenPayload, IUser} from "../types";
-import {emailService} from "./emailService";
-import {passwordService} from "./passwordService";
-import {tokenService} from "./tokenService";
-import {EEmailActions} from "../constants/emailConstants";
+import { EEmailActions } from "../constants/emailConstants";
+import { ApiError } from "../errors";
+import { Token, User } from "../models";
+import { ICredentials, ITokenPair, ITokenPayload, IUser } from "../types";
+import { emailService } from "./emailService";
+import { passwordService } from "./passwordService";
+import { tokenService } from "./tokenService";
 
 class AuthService {
   public async register(body: IUser): Promise<void> {
@@ -15,7 +15,10 @@ class AuthService {
         ...body,
         password: hashedPassword,
       });
-      await emailService.sendMail("ihor.sorokivskyi.xt.2017@lpnu.ua",EEmailActions.WELCOME);
+      await emailService.sendMail(
+        "ihor.sorokivskyi.xt.2017@lpnu.ua",
+        EEmailActions.WELCOME
+      );
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }

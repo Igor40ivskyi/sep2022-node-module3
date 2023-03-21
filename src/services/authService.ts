@@ -73,6 +73,24 @@ class AuthService {
       throw new ApiError(e.message, e.status);
     }
   }
+
+  public async changePassword(
+    userId: string,
+    oldPassword: string,
+    newPassword: string
+  ): Promise<void> {
+    const user = await User.findById(userId);
+
+    const isMatched = await passwordService.compare(oldPassword, user.password);
+
+    if (!isMatched) {
+      throw new ApiError("wrong old password", 400);
+    }
+
+    const newPasswordHashed = await passwordService.hash(newPassword);
+
+    await User.updateOne({ _id: user._id }, { password: newPasswordHashed });
+  }
 }
 
 export const authService = new AuthService();

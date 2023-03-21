@@ -3,6 +3,7 @@ import nodemailer, { Transporter } from "nodemailer";
 import * as path from "path";
 
 import { configs } from "../configs";
+import { allTemplates, EEmailActions } from "../constants/emailConstants";
 
 class EmailService {
   private transporter: Transporter;
@@ -25,18 +26,25 @@ class EmailService {
       juice: true,
       juiceResources: {
         webResources: {
-          relativeTo: path.join(process.cwd(), "src", "static", "css"),
+          relativeTo: path.join(
+            process.cwd(),
+            "src",
+            "statics",
+            "css"
+          ),
         },
       },
     });
   }
 
-  public async sendMail(email: string) {
-    const html = await this.templateParser.render("register");
+  public async sendMail(email: string, emailAction: EEmailActions) {
+    const templateInfo = allTemplates[emailAction];
+
+    const html = await this.templateParser.render(templateInfo.templateName);
     return this.transporter.sendMail({
       from: "No reply",
       to: email,
-      subject: "Test email",
+      subject: templateInfo.subject,
       html,
     });
   }

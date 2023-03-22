@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
-import { EEmailActions } from "../constants/emailConstants";
+import { EEmailActions } from "../enums";
 import { User } from "../models";
-import { emailService } from "../services/emailService";
+import { emailService } from "../services";
 import { ICommonResponse, IUser } from "../types";
 
 class UserController {

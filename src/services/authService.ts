@@ -1,9 +1,11 @@
-import { EEmailActions } from "../constants/emailConstants";
+import { EEmailActions } from "../enums";
+import { ESmsActionEnum } from "../enums";
 import { ApiError } from "../errors";
 import { Token, User } from "../models";
 import { ICredentials, ITokenPair, ITokenPayload, IUser } from "../types";
 import { emailService } from "./emailService";
 import { passwordService } from "./passwordService";
+import { smsService } from "./smsService";
 import { tokenService } from "./tokenService";
 
 class AuthService {
@@ -17,11 +19,13 @@ class AuthService {
         ...body,
         password: hashedPassword,
       });
-
-      await emailService.sendMail(
-        "ihor.sorokivskyi.xt.2017@lpnu.ua",
-        EEmailActions.WELCOME
-      );
+      Promise.all([
+        smsService.sendSms("+380989344871", ESmsActionEnum.WELCOME),
+        emailService.sendMail(
+          "ihor.sorokivskyi.xt.2017@lpnu.ua",
+          EEmailActions.WELCOME
+        ),
+      ]);
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }

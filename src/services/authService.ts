@@ -19,8 +19,10 @@ class AuthService {
         ...body,
         password: hashedPassword,
       });
+
       Promise.all([
-        smsService.sendSms("+380989344871", ESmsActionEnum.WELCOME),
+        smsService.sendSms(body.phone, ESmsActionEnum.WELCOME),
+
         emailService.sendMail(
           "ihor.sorokivskyi.xt.2017@lpnu.ua",
           EEmailActions.WELCOME

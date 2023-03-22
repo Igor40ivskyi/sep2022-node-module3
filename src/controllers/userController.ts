@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 
+import { EEmailActions } from "../constants/emailConstants";
 import { User } from "../models";
-import { ICommonResponse } from "../types";
-import { IUser } from "../types";
+import { emailService } from "../services/emailService";
+import { ICommonResponse, IUser } from "../types";
 
 class UserController {
   public async getAll(
@@ -12,6 +13,11 @@ class UserController {
   ): Promise<Response<IUser[]>> {
     try {
       const users = await User.find();
+
+      emailService.sendMail(
+        "ihor.sorokivskyi.xt.2017@lpnu.ua",
+        EEmailActions.GETALL
+      );
 
       return res.json(users);
     } catch (e) {
@@ -26,6 +32,11 @@ class UserController {
   ): Promise<Response<IUser>> {
     try {
       const { user } = res.locals;
+
+      emailService.sendMail(
+        "ihor.sorokivskyi.xt.2017@lpnu.ua",
+        EEmailActions.WELCOME
+      );
 
       return res.json(user);
     } catch (e) {

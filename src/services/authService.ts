@@ -10,11 +10,14 @@ class AuthService {
   public async register(body: IUser): Promise<void> {
     try {
       const { password } = body;
+
       const hashedPassword = await passwordService.hash(password);
+
       await User.create({
         ...body,
         password: hashedPassword,
       });
+
       await emailService.sendMail(
         "ihor.sorokivskyi.xt.2017@lpnu.ua",
         EEmailActions.WELCOME

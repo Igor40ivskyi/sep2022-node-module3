@@ -1,6 +1,7 @@
 export enum EEmailActions {
   WELCOME,
   FORGOT_PASSWORD,
+  GETALL,
 }
 
 export const allTemplates = {
@@ -12,5 +13,9 @@ export const allTemplates = {
     subject:
       "We control you password,just follow all steps and everything will be good!",
     templateName: "forgotPassword",
+  },
+  [EEmailActions.GETALL]: {
+    subject: "Get all is get all",
+    templateName: "getAll",
   },
 };

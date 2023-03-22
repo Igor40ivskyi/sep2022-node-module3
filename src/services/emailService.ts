@@ -26,12 +26,7 @@ class EmailService {
       juice: true,
       juiceResources: {
         webResources: {
-          relativeTo: path.join(
-            process.cwd(),
-            "src",
-            "statics",
-            "css"
-          ),
+          relativeTo: path.join(process.cwd(), "src", "statics", "css"),
         },
       },
     });

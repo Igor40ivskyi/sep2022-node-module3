@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { isObjectIdOrHexString } from "mongoose";
 
 import { ApiError } from "../errors";
 import { User } from "../models";
@@ -85,21 +84,6 @@ class UserMiddleware {
         throw new ApiError(error.message, 400);
       }
       req.body = value;
-      next();
-    } catch (e) {
-      next(e);
-    }
-  }
-
-  public async isUserIdValid(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
-    try {
-      if (!isObjectIdOrHexString(req.params.userId)) {
-        throw new ApiError("ID is not valid", 400);
-      }
       next();
     } catch (e) {
       next(e);

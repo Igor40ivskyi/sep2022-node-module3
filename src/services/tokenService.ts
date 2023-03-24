@@ -2,6 +2,7 @@ import * as jwt from "jsonwebtoken";
 
 import { configs } from "../configs";
 import { ETokenType } from "../enums";
+import { EActionTokenType } from "../enums/action-token-typeEnum";
 import { ApiError } from "../errors";
 import { ITokenPair, ITokenPayload } from "../types";
 
@@ -14,6 +15,24 @@ class TokenService {
       expiresIn: "30d",
     });
     return { accessToken, refreshToken };
+  }
+
+  public generateActionToken(
+    payload: any,
+    tokenType: EActionTokenType
+  ): string {
+    let secret = "";
+
+    switch (tokenType) {
+      case EActionTokenType.activate:
+        secret = configs.ACTIVATE_SECRET;
+        break;
+
+      case EActionTokenType.forgot:
+        secret = configs.FORGOT_SECRET;
+        break;
+    }
+    return jwt.sign(payload, secret, { expiresIn: "7d" });
   }
 
   public checkToken(

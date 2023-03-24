@@ -1,7 +1,7 @@
-import { EEmailActions } from "../enums";
-import { ESmsActionEnum } from "../enums";
+import { EEmailActions, ESmsActionEnum } from "../enums";
+import { EActionTokenType } from "../enums/action-token-typeEnum";
 import { ApiError } from "../errors";
-import { Token, User } from "../models";
+import { Action, Token, User } from "../models";
 import { ICredentials, ITokenPair, ITokenPayload, IUser } from "../types";
 import { emailService } from "./emailService";
 import { passwordService } from "./passwordService";
@@ -99,6 +99,27 @@ class AuthService {
     const newPasswordHashed = await passwordService.hash(newPassword);
 
     await User.updateOne({ _id: user._id }, { password: newPasswordHashed });
+  }
+
+  public async forgotPassword(user: IUser): Promise<void> {
+    try {
+      const actionToken = tokenService.generateActionToken(
+        { _id: user._id },
+        EActionTokenType.forgot
+      );
+
+      await Action.create({
+        actionToken,
+        tokenType: EActionTokenType.forgot,
+        _user_id: user._id,
+      });
+
+      await emailService.sendMail(user.email, EEmailActions.FORGOT_PASSWORD, {
+        token: actionToken,
+      });
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
   }
 }
 

@@ -121,6 +121,15 @@ class AuthService {
       throw new ApiError(e.message, e.status);
     }
   }
+  public async setForgotPassword(password: string, id: string): Promise<void> {
+    try {
+      const hashedPassword = await passwordService.hash(password);
+
+      await User.updateOne({ _id: id }, { password: hashedPassword });
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
 }
 
 export const authService = new AuthService();

@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 
 import { ETokenType } from "../enums";
+import { EActionTokenType } from "../enums/action-token-typeEnum";
 import { ApiError } from "../errors";
-import { Token } from "../models";
+import { Action, Token } from "../models";
 import { tokenService } from "../services";
 
 class AuthMiddleware {
@@ -52,6 +53,36 @@ class AuthMiddleware {
       );
 
       const tokenInfo = await Token.findOne({ refreshToken });
+
+      if (!tokenInfo) {
+        throw new ApiError("Token is not valid", 401);
+      }
+
+      req.res.locals = { tokenInfo, jwtPayload };
+      next();
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async checkActionForgotToken(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const actionToken = req.params.token;
+
+      if (!actionToken) {
+        throw new ApiError("No token", 401);
+      }
+
+      const jwtPayload = tokenService.checkActionToken(
+        actionToken,
+        EActionTokenType.forgot
+      );
+
+      const tokenInfo = await Action.findOne({ actionToken });
 
       if (!tokenInfo) {
         throw new ApiError("Token is not valid", 401);

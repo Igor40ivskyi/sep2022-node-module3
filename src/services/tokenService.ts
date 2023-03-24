@@ -4,7 +4,7 @@ import { configs } from "../configs";
 import { ETokenType } from "../enums";
 import { EActionTokenType } from "../enums/action-token-typeEnum";
 import { ApiError } from "../errors";
-import { ITokenPair, ITokenPayload } from "../types";
+import {IActionTokenPayload, ITokenPair, ITokenPayload} from "../types";
 
 class TokenService {
   public generateTokenPair(payload: ITokenPayload): ITokenPair {
@@ -15,24 +15,6 @@ class TokenService {
       expiresIn: "30d",
     });
     return { accessToken, refreshToken };
-  }
-
-  public generateActionToken(
-    payload: any,
-    tokenType: EActionTokenType
-  ): string {
-    let secret = "";
-
-    switch (tokenType) {
-      case EActionTokenType.activate:
-        secret = configs.ACTIVATE_SECRET;
-        break;
-
-      case EActionTokenType.forgot:
-        secret = configs.FORGOT_SECRET;
-        break;
-    }
-    return jwt.sign(payload, secret, { expiresIn: "7d" });
   }
 
   public checkToken(
@@ -52,6 +34,43 @@ class TokenService {
           break;
       }
       return jwt.verify(token, secret) as ITokenPayload;
+    } catch (e) {
+      throw new ApiError("Token is not valid", 401);
+    }
+  }
+
+  public generateActionToken(
+    payload: IActionTokenPayload,
+    tokenType: EActionTokenType
+  ): string {
+    let secret = "";
+
+    switch (tokenType) {
+      case EActionTokenType.activate:
+        secret = configs.ACTIVATE_SECRET;
+        break;
+
+      case EActionTokenType.forgot:
+        secret = configs.FORGOT_SECRET;
+        break;
+    }
+    return jwt.sign(payload, secret, { expiresIn: "7d" });
+  }
+
+  public checkActionToken(token: string, tokenType: EActionTokenType) {
+    try {
+      let secret = "";
+
+      switch (tokenType) {
+        case EActionTokenType.forgot:
+          secret = configs.FORGOT_SECRET;
+          break;
+        case EActionTokenType.activate:
+          secret = configs.ACTIVATE_SECRET;
+          break;
+      }
+
+      return jwt.verify(token, secret) as IActionTokenPayload;
     } catch (e) {
       throw new ApiError("Token is not valid", 401);
     }

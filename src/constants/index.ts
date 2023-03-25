@@ -1,3 +1,3 @@
+export * from "./emailConstants";
 export * from "./regexConstants";
-export * from './emailConstants';
-export * from './smsConstants';
+export * from "./smsConstants";

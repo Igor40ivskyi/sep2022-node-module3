@@ -67,6 +67,22 @@ class AuthController {
       next(e);
     }
   }
+
+  public async forgotPassword(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { user } = req.res.locals;
+
+      await authService.forgotPassword(user);
+
+      res.sendStatus(200);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 export const authController = new AuthController();

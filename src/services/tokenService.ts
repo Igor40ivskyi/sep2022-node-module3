@@ -4,7 +4,7 @@ import { configs } from "../configs";
 import { ETokenType } from "../enums";
 import { EActionTokenType } from "../enums/action-token-typeEnum";
 import { ApiError } from "../errors";
-import {IActionTokenPayload, ITokenPair, ITokenPayload} from "../types";
+import { IActionTokenPayload, ITokenPair, ITokenPayload } from "../types";
 
 class TokenService {
   public generateTokenPair(payload: ITokenPayload): ITokenPair {

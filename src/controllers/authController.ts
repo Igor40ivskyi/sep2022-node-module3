@@ -83,6 +83,23 @@ class AuthController {
       next(e);
     }
   }
+
+  public async setForgotPassword(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { password } = req.body;
+      const { tokenInfo } = req.res.locals;
+
+      await authService.setForgotPassword(password, tokenInfo._user_id);
+
+      res.sendStatus(200);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 export const authController = new AuthController();

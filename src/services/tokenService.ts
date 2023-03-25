@@ -56,6 +56,25 @@ class TokenService {
 
     return jwt.sign(payload, secret, { expiresIn: "7d" });
   }
+
+  public checkActionToken(token: string, tokenType: EActionTokenType) {
+    try {
+      let secret = "";
+
+      switch (tokenType) {
+        case EActionTokenType.forgot:
+          secret = configs.FORGOT_SECRET;
+          break;
+        case EActionTokenType.activate:
+          secret = configs.ACTIVATE_SECRET;
+          break;
+      }
+
+      return jwt.verify(token, secret) as IActionTokenPayload;
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
 }
 
 export const tokenService = new TokenService();

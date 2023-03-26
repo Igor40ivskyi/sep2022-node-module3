@@ -16,4 +16,8 @@ export const allTemplates: {
     subject: "Get all is get all",
     templateName: "getAll",
   },
+  [EEmailActions.ACTIVATE]: {
+    subject: "Activate!",
+    templateName: "activate",
+  },
 };

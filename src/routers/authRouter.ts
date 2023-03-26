@@ -43,6 +43,8 @@ router.put(
   authController.setForgotPassword
 );
 
+router.post("/activate",)
+
 router.post(
   "/refresh",
   authMiddleware.checkRefreshToken,

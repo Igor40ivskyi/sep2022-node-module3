@@ -21,7 +21,7 @@ const actionTokenSchema = new Schema(
   },
   {
     versionKey: false,
-    timeStamp: true,
+    timestamps: true,
   }
 );
 

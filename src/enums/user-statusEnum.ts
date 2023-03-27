@@ -1,5 +1,5 @@
 export enum EUserStatus {
-    active = "active",
-    inactive = "inactive",
-    blocked = "blocked",
+  active = "active",
+  inactive = "inactive",
+  blocked = "blocked",
 }

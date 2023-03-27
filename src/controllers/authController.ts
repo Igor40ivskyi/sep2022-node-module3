@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import { authService } from "../services";
-import {ITokenPair, ITokenPayload} from "../types";
+import { ITokenPair, ITokenPayload } from "../types";
 
 class AuthController {
   public async register(req: Request, res: Response, next: NextFunction) {
@@ -119,7 +119,7 @@ class AuthController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { _id } = req.res.locals.jwtPayload as ITokenPayload
+      const { _id } = req.res.locals.jwtPayload as ITokenPayload;
       await authService.activate(_id);
 
       res.sendStatus(204);

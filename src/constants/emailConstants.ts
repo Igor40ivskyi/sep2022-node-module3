@@ -24,4 +24,8 @@ export const allTemplates: {
     subject: "Just email",
     templateName: "justEmail",
   },
+  [EEmailActions.REMINDER]:{
+    subject: "JUST REMIND THAT YOU HAVE BEEN OUT A LONG TIME",
+    templateName:""
+  }
 };

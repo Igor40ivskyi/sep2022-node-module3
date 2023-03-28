@@ -2,7 +2,9 @@ import { CronJob } from "cron";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 
-import { Token } from "../models";
+import { EEmailActions } from "../enums";
+import { Token, User } from "../models";
+import { emailService } from "../services";
 
 dayjs.extend(utc);
 
@@ -12,10 +14,30 @@ dayjs.extend(utc);
 //
 // export const removeOldTokens = new CronJob("* * * * * *", tokensRemover);
 
-const tokensRemover = async (): Promise<void> => {
-  // const previousMonth = dayjs().format("h:m a DD/MM/YYYY");
+// const previousMonth = dayjs().format("h:m a DD/MM/YYYY");
 
+const tokensRemover = async (): Promise<void> => {
   const previousMonth = dayjs().utc().subtract(1, "month");
+
+  const longTimeAgoTokens = await Token.find({
+    createdAt: { $lte: previousMonth },
+  });
+
+  const longTimeAgoUsersIds = longTimeAgoTokens.map(
+    (record) => record._user_id
+  );
+
+  const users = await User.find({ _id: { $in: longTimeAgoUsersIds } });
+
+  const emails = users.map((u) => u.email);
+
+  await emailService.sendMail(emails, EEmailActions.REMINDER);
+
+  // await Promise.all(
+  //   users.map(async ({ email }) => {
+  //     return emailService.sendMail(email, EEmailActions.REMINDER);
+  //   })
+  // );
 
   await Token.deleteMany({ createdAt: { $lte: previousMonth } });
 };

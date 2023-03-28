@@ -4,4 +4,5 @@ export enum EEmailActions {
   GETALL,
   ACTIVATE,
   SEND_ME,
+  REMINDER,
 }

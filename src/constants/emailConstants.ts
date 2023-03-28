@@ -20,4 +20,8 @@ export const allTemplates: {
     subject: "Activate!",
     templateName: "activate",
   },
+  [EEmailActions.SEND_ME]: {
+    subject: "Just email",
+    templateName: "justEmail",
+  },
 };

@@ -1,3 +1,4 @@
+import { removeOldPasswords } from "./removeOldPasswordsCron";
 import { removeOldTokens } from "./removeOldTokensCron";
 
 // export const cronRunner = () => {
@@ -6,5 +7,5 @@ import { removeOldTokens } from "./removeOldTokensCron";
 
 export const cronRunner = () => {
   removeOldTokens.start();
-  removeOldTokens.start();
+  removeOldPasswords.start();
 };

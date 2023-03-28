@@ -3,4 +3,5 @@ export enum EEmailActions {
   FORGOT_PASSWORD,
   GETALL,
   ACTIVATE,
+  SEND_ME,
 }

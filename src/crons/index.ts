@@ -6,4 +6,5 @@ import { removeOldTokens } from "./removeOldTokensCron";
 
 export const cronRunner = () => {
   removeOldTokens.start();
+  removeOldTokens.start();
 };

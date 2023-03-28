@@ -19,15 +19,13 @@ dayjs.extend(utc);
 const tokensRemover = async (): Promise<void> => {
   const previousMonth = dayjs().utc().subtract(1, "month");
 
-  const longTimeAgoTokens = await Token.find({
+  const expiredTokens = await Token.find({
     createdAt: { $lte: previousMonth },
   });
 
-  const longTimeAgoUsersIds = longTimeAgoTokens.map(
-    (record) => record._user_id
-  );
+  const ids = expiredTokens.map((record) => record._user_id);
 
-  const users = await User.find({ _id: { $in: longTimeAgoUsersIds } });
+  const users = await User.find({ _id: { $in: ids } });
 
   const emails = users.map((u) => u.email);
 

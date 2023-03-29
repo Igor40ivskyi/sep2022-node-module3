@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import { Model, model, Schema } from "mongoose";
 
 import { EGenders, EUserStatus } from "../enums";
 import { IUser } from "../types";
@@ -43,8 +43,22 @@ interface IUserMethods {
   nameWithAge(): void;
 }
 
+interface IUserVirtuals {
+  nameWithSurname: string;
+}
+
+interface IUserModel extends Model<IUser, object, IUserMethods, IUserVirtuals> {
+  findByName(name: string): Promise<IUser[]>;
+}
+
+userSchema.virtual("nameWithSurname").get(function () {
+  return `${this.name} Piatov`;
+});
+
 userSchema.methods = {
-  nameWithAge() {},
+  nameWithAge() {
+    return `${this.name} is ${this.age} years old`;
+  },
 };
 
 userSchema.statics = {
@@ -53,4 +67,4 @@ userSchema.statics = {
   },
 };
 
-export const User = model("user", userSchema);
+export const User = model<IUser, IUserModel>("user", userSchema);

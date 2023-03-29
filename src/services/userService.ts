@@ -6,6 +6,7 @@ interface IPaginationResponse<T> {
   page: number;
   perPage: number;
   itemsCount: number;
+  itemsFound: number;
   data: T[];
 }
 
@@ -20,16 +21,19 @@ class UserService {
 
   public async getWithPagination(
     query: any
-  ): Promise<IPaginationResponse<IUser>> {
+  ): Promise<IPaginationResponse<any>> {
     try {
+      const queryStr = JSON.stringify(query);
+      const queryObj = JSON.parse(
+        queryStr.replace(/\b(gte|lte|gt|lt)\b/, (match) => `$${match}`)
+      );
+
       const {
         page = 1,
         limit = 5,
         sortedBy = "createdAt",
         ...searchObject
-      } = query;
-
-      console.log(page, "PAGE");
+      } = queryObj;
 
       const skip = limit * (page - 1);
 
@@ -43,7 +47,7 @@ class UserService {
         page: +page,
         itemsCount: userstotalCount,
         perPage: +limit,
-        //@ts-ignore
+        itemsFound: users.length,
         data: users,
       };
     } catch (e) {

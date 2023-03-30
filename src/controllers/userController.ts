@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { EEmailActions } from "../enums";
 import { User } from "../models";
 import { emailService } from "../services";
+import { IQuery, userService } from "../services/userService";
 import { ICommonResponse, IUser } from "../types";
 
 class UserController {
@@ -12,6 +13,10 @@ class UserController {
     next: NextFunction
   ): Promise<Response<IUser[]>> {
     try {
+      const users = await userService.getWithPagination(
+        req.query as unknown as IQuery
+      );
+
       return res.json(users);
     } catch (e) {
       next(e);

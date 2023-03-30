@@ -1,26 +1,59 @@
-import Api from "twilio/lib/rest/Api";
-
 import { ApiError } from "../errors";
+import { User } from "../models";
 import { IUser } from "../types";
 
 interface IPaginationResponse<T> {
   page: number;
   perPage: number;
   itemsCount: number;
+  itemsFound: number;
   data: T[];
 }
 
+export interface IQuery {
+  page: string;
+  limit: string;
+  sortedBy: string;
+
+  [key: string]: string | number;
+}
+
 class UserService {
-  getWithPagination(query: any): Promise<IPaginationResponse<IUser>> {
+  public async getWithPagination(
+    query: IQuery
+  ): Promise<IPaginationResponse<IUser>> {
     try {
+      const queryStr = JSON.stringify(query);
+      const queryObj = JSON.parse(
+        queryStr.replace(/\b(gte|lte|gt|lt)\b/, (match) => `$${match}`)
+      );
+
+      const {
+        page = 1,
+        limit = 5,
+        sortedBy = "createdAt",
+        ...searchObject
+      } = queryObj;
+
+      const skip = limit * (page - 1);
+
+      const users = (await User.find(searchObject)
+        .limit(limit)
+        .skip(skip)
+        .sort(sortedBy)) as IUser[];
+      const userstotalCount = await User.count();
+
       return {
-        page: 1,
-        perPage: 1,
-        itemsCount: 1,
-        data: [],
+        page: +page,
+        itemsCount: userstotalCount,
+        perPage: +limit,
+        itemsFound: users.length,
+        data: users,
       };
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }
   }
 }
+
+export const userService = new UserService();

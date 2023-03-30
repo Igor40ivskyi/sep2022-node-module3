@@ -12,10 +12,6 @@ class UserController {
     next: NextFunction
   ): Promise<Response<IUser[]>> {
     try {
-
-
-
-
       return res.json(users);
     } catch (e) {
       next(e);

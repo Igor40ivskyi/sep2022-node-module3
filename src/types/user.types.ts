@@ -1,8 +1,11 @@
+import { Types } from "mongoose";
+
 export interface IUser {
-  _id?: string;
-  name: string;
-  email: string;
-  password: string;
-  gender: string;
-  phone: string;
+  _id?: Types.ObjectId | string;
+  name?: string;
+  email?: string;
+  password?: string;
+  gender?: string;
+  age?: number;
+  phone?: string;
 }

@@ -29,7 +29,7 @@ class UserService {
 
   public async getWithPagination(
     query: IQuery
-  ): Promise<IPaginationResponse<any>> {
+  ): Promise<IPaginationResponse<IUser>> {
     try {
       const user = await User.findById("6423e2ddf3fcf6d4d84ab077");
 

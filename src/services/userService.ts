@@ -2,13 +2,13 @@ import { ApiError } from "../errors";
 import { User } from "../models";
 import { IUser } from "../types";
 
-interface IPaginationResponse<T> {
-  page: number;
-  perPage: number;
-  itemsCount: number;
-  itemsFound: number;
-  data: T[];
-}
+// interface IPaginationResponse<T> {
+//   page: number;
+//   perPage: number;
+//   itemsCount: number;
+//   itemsFound: number;
+//   data: T[];
+// }
 
 export interface IQuery {
   page: string;
@@ -26,40 +26,27 @@ class UserService {
       throw new ApiError(e.message, e.status);
     }
   }
-
-  public async getWithPagination(
-    query: IQuery
-  ): Promise<IPaginationResponse<IUser>> {
+  public async getWithPagination(query: IQuery) {
     try {
-      const user = await User.findById("6423e2ddf3fcf6d4d84ab077");
-
-      console.log(user.nameWithSurname);
-
       const queryStr = JSON.stringify(query);
       const queryObj = JSON.parse(
-        queryStr.replace(/\b(gte|lte|gt|lt)\b/, (match) => `$${match}`)
+        queryStr.replace(/\b(gte|lte|gt|lt)\b/, (word) => `$${word}`)
       );
 
-      const {
-        page = 1,
-        limit = 5,
-        sortedBy = "createdAt",
-        ...searchObject
-      } = queryObj;
+      const { page = 1, limit = 3, sortedBy = "name", ...searchObj } = queryObj;
 
-      const skip = limit * (page - 1);
+      const skip = +limit * (+page - 1);
 
-      const users = await User.find(searchObject)
-        .limit(limit)
+      const users = await User.find(searchObj)
         .skip(skip)
+        .limit(+limit)
         .sort(sortedBy);
-      const userstotalCount = await User.count();
 
       return {
-        page: +page,
-        itemsCount: userstotalCount,
-        perPage: +limit,
-        itemsFound: users.length,
+        page: 1,
+        perPage: 1,
+        totalItems: 1,
+        totalFound: 1,
         data: users,
       };
     } catch (e) {

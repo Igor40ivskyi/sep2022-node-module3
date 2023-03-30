@@ -12,12 +12,9 @@ class UserController {
     next: NextFunction
   ): Promise<Response<IUser[]>> {
     try {
-      const users = await User.find();
 
-      emailService.sendMail(
-        "ihor.sorokivskyi.xt.2017@lpnu.ua",
-        EEmailActions.GETALL
-      );
+
+
 
       return res.json(users);
     } catch (e) {

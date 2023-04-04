@@ -23,6 +23,10 @@ const userSchema = new Schema(
       type: Number,
       required: false,
     },
+    phone: {
+      type: Number,
+      required: true,
+    },
     gender: {
       type: String,
       enum: EGenders,

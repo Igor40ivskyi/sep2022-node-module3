@@ -3,7 +3,7 @@ import Joi from "joi";
 export class CarValidator {
   private static brand = Joi.string().min(2).max(15).trim().lowercase();
   private static model = Joi.string().min(2).max(15).trim().lowercase();
-  private static year = Joi.string().min(1800).max(new Date().getFullYear());
+  private static year = Joi.number().min(1800).max(new Date().getFullYear());
 
   static createCar = Joi.object({
     brand: this.brand.required(),

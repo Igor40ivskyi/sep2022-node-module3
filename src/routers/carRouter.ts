@@ -6,16 +6,15 @@ import {
   carMiddleware,
   commonMiddleware,
 } from "../middlewares";
-import { UserValidator } from "../validators";
+import { CarValidator, UserValidator } from "../validators";
 
 const router = Router();
 
 router.post(
   "/",
   authMiddleware.checkAccessToken,
-  commonMiddleware.isIdValid("carId"),
-  carMiddleware.getByIdOrThrow,
-  carController.getById
+  commonMiddleware.isBodyValid(CarValidator.createCar),
+  carController.create
 );
 
 router.get(

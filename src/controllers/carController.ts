@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
-import { EEmailActions } from "../enums";
 import { Car } from "../models";
-import { emailService } from "../services";
-import { ICar, ICommonResponse } from "../types";
+import { carService } from "../services";
+import { ICar, ICommonResponse, ITokenPayload } from "../types";
 
 class CarController {
   public async getById(
@@ -12,14 +11,10 @@ class CarController {
     next: NextFunction
   ): Promise<Response<ICar>> {
     try {
-      const { car } = res.locals;
+      const { car, jwtPayload } = res.locals;
+      const result = await carService.getbyId(jwtPayload._id, car._id);
 
-      emailService.sendMail(
-        "ihor.sorokivskyi.xt.2017@lpnu.ua",
-        EEmailActions.WELCOME
-      );
-
-      return res.json(car);
+      return res.json(result);
     } catch (e) {
       next(e);
     }
@@ -31,13 +26,10 @@ class CarController {
     next: NextFunction
   ): Promise<Response<ICommonResponse<ICar>>> {
     try {
-      const body = req.body;
-      const car = await Car.create(body);
+      const { _id } = req.res.locals.jwtPayload as ITokenPayload;
+      const car = await carService.create(req.body, _id);
 
-      return res.status(201).json({
-        message: "car created!",
-        data: car,
-      });
+      return res.status(201).json(car);
     } catch (e) {
       next(e);
     }

@@ -1,4 +1,7 @@
+import { extname } from "node:path";
+
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { v4 } from "uuid";
 
 import { configs } from "../configs";
 
@@ -17,15 +20,26 @@ class S3Service {
     itemType: string,
     itemId: string
   ): Promise<string> {
+    const filePath = this.buildPath(file.name, itemType, itemId);
+
     await this.client.send(
       new PutObjectCommand({
         Bucket: configs.AWS_S3_NAME,
-        Key: "", // TODO
+        Key: filePath,
         Body: file.data,
         ContentType: file, //TODO
         ACL: configs.AWS_S3_ACL,
       })
     );
+    return `${configs.AWS_S3_URL}/${filePath}`;
+  }
+  private buildPath(
+    fileName: string,
+    itemType: string,
+    itemId: string
+  ): string {
+    extname(fileName);
+    return `${itemType}/${itemId}/${v4()}${extname(fileName)}`;
   }
 }
 

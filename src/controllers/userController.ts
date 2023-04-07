@@ -101,11 +101,11 @@ class UserController {
   ): Promise<Response<void>> {
     try {
       const { userId } = req.params;
-      console.log(req.files);
+      const { avatar } = req.files;
 
-      // const user = await userService.uploadAvatar(userId);
+      const user = await userService.uploadAvatar(avatar, userId);
 
-      return res.status(201).json(userId);
+      return res.status(201).json(user);
     } catch (e) {
       next(e);
     }

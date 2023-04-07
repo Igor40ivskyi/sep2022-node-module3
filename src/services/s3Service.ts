@@ -27,7 +27,7 @@ class S3Service {
         Bucket: configs.AWS_S3_NAME,
         Key: filePath,
         Body: file.data,
-        ContentType: file, //TODO
+        ContentType: file.mimetype,
         ACL: configs.AWS_S3_ACL,
       })
     );

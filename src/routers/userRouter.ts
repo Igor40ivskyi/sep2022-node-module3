@@ -3,7 +3,7 @@ import { Router } from "express";
 import { userController } from "../controllers";
 import {
   authMiddleware,
-  commonMiddleware,
+  commonMiddleware, fileMiddleware,
   userMiddleware,
 } from "../middlewares";
 import { UserValidator } from "../validators";
@@ -41,6 +41,7 @@ router.put(
   "/:userId/avatar",
   authMiddleware.checkAccessToken,
   commonMiddleware.isIdValid("userId"),
+  fileMiddleware.isAvatarValid,
   userMiddleware.getByIdOrThrow,
   userController.uploadAvatar
 );

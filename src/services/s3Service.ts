@@ -5,6 +5,7 @@ import {
   PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
+import { UploadedFile } from "express-fileupload";
 import { v4 } from "uuid";
 
 import { configs } from "../configs";
@@ -19,8 +20,9 @@ class S3Service {
       },
     })
   ) {}
+
   public async uploadPhoto(
-    file: any,
+    file: UploadedFile,
     itemType: string,
     itemId: string
   ): Promise<string> {
@@ -52,7 +54,6 @@ class S3Service {
     itemType: string,
     itemId: string
   ): string {
-    extname(fileName);
     return `${itemType}/${itemId}/${v4()}${extname(fileName)}`;
   }
 }

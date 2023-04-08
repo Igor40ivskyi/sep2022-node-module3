@@ -3,7 +3,8 @@ import { Router } from "express";
 import { userController } from "../controllers";
 import {
   authMiddleware,
-  commonMiddleware, fileMiddleware,
+  commonMiddleware,
+  fileMiddleware,
   userMiddleware,
 } from "../middlewares";
 import { UserValidator } from "../validators";
@@ -44,6 +45,14 @@ router.put(
   fileMiddleware.isAvatarValid,
   userMiddleware.getByIdOrThrow,
   userController.uploadAvatar
+);
+
+router.delete(
+  "/:userId/avatar",
+  authMiddleware.checkAccessToken,
+  commonMiddleware.isIdValid("userId"),
+  userMiddleware.getByIdOrThrow,
+  userController.deleteAvatar
 );
 
 export const userRouter = router;

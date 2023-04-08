@@ -8,8 +8,8 @@ export class UserMapper {
       name: user.name,
       email: user.email,
       gender: user.gender,
-      age: user.age,
-      avatar: `${configs.AWS_S3_URL}/${user.avatar}`,
+      age: user.age || null,
+      avatar: user.avatar ? `${configs.AWS_S3_URL}/${user.avatar}` : null,
       phone: user.phone,
     };
   }

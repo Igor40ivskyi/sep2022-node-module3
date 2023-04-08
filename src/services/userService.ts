@@ -70,15 +70,24 @@ class UserService {
     }
   }
 
-  public async aploadAvatar(
-    file: UploadedFile,
-    userId: string
-  ): Promise<IUser> {
+  public async update(userId: string, data: Partial<IUser>): Promise<IUser> {
     try {
-      const filePath = await s3Service.uploadPhoto(file, "user", userId);
+      return await User.findByIdAndUpdate(userId, data, { new: true });
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
+
+  public async aploadAvatar(file: UploadedFile, user: IUser): Promise<IUser> {
+    try {
+      const filePath = await s3Service.uploadPhoto(file, "user", user._id);
+
+      if (user.avatar) {
+        await s3Service.deletePhoto(user.avatar);
+      }
 
       return await User.findByIdAndUpdate(
-        userId,
+        user._id,
         { avatar: filePath },
         { new: true }
       );

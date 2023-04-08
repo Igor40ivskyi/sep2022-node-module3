@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { UploadedFile } from "express-fileupload";
 
 import { EEmailActions } from "../enums";
 import { User } from "../models";
@@ -89,6 +90,23 @@ class UserController {
       const { userId } = req.params;
       await User.deleteOne({ _id: userId });
       return res.sendStatus(204);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async uploadAvatar(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<IUser>> {
+    try {
+      const userEntity = res.locals.user as IUser;
+
+      const avatar = req.files.avatar as UploadedFile;
+
+
+
     } catch (e) {
       next(e);
     }

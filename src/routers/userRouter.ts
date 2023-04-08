@@ -37,4 +37,12 @@ router.delete(
   userController.delete
 );
 
+router.put(
+  "/:userId/avatar",
+  authMiddleware.checkAccessToken,
+  commonMiddleware.isIdValid("userId"),
+  userMiddleware.getByIdOrThrow
+    userController.uploadAvatar
+);
+
 export const userRouter = router;

@@ -1,3 +1,5 @@
+import { UploadedFile } from "express-fileupload";
+
 import { ApiError } from "../errors";
 import { User } from "../models";
 import { IUser } from "../types";
@@ -62,6 +64,16 @@ class UserService {
         itemsFound: users.length,
         data: users,
       };
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
+
+  public async uploadAvatar(file: UploadedFile, user: IUser): Promise<IUser> {
+    try {
+
+
+
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }

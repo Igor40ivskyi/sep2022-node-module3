@@ -41,8 +41,8 @@ router.put(
   "/:userId/avatar",
   authMiddleware.checkAccessToken,
   commonMiddleware.isIdValid("userId"),
-  userMiddleware.getByIdOrThrow
-    userController.uploadAvatar
+  userMiddleware.getByIdOrThrow,
+  userController.uploadAvatar
 );
 
 export const userRouter = router;

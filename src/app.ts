@@ -1,6 +1,9 @@
-import express, { NextFunction, Request, Response } from "express";
+import * as http from "node:http";
+
+import express, { Application, NextFunction, Request, Response } from "express";
 import fileUploader from "express-fileupload";
 import * as mongoose from "mongoose";
+import { Server } from "socket.io";
 
 import { configs } from "./configs";
 import { cronRunner } from "./crons";
@@ -8,7 +11,18 @@ import { ApiError } from "./errors";
 import { authRouter, carRouter } from "./routers";
 import { userRouter } from "./routers";
 
-const app = express();
+const app: Application = express();
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log(socket);
+});
 
 app.use(express.json());
 app.use(fileUploader());

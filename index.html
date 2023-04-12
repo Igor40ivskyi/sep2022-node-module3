@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="display" style="margin:50px;height: 400px;width:600px;border:2px solid dimgrey"></div>
+<input type="text" placeholder="message" id="input1">
+<button id="button1" >SEND</button>
+<button id="join" >JOIN ROOM</button>
+<button id="leave" >LEAVE ROOM</button>
+
+<div class="joinersPack"></div>
+
+
+<script type="module">
+    import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
+
+    const socket = io("http://localhost:5100");
+
+    socket.on("to:me", data => {
+        console.log(data.message);
+    });
+
+    socket.on("to:all:except", data => {
+        console.log(data.message);
+    });
+
+    socket.on("to:all", data => {
+        console.log(data.message);
+    });
+
+
+    const input1 = document.getElementById("input1");
+    const button1 = document.getElementById("button1");
+    const display = document.getElementsByClassName("display")[0];
+    const pack = document.getElementsByClassName("joinersPack")[0];
+
+    const buttonJoinRoom = document.getElementById("join");
+    const buttonLeaveRoom = document.getElementById("leave");
+
+    button1.onclick = () => {
+        socket.emit("message",{message: input1.value})
+    };
+
+    socket.on("chat:message", data => {
+        const h4 = document.createElement("h4");
+        h4.innerText = data.message;
+
+        display.appendChild(h4)
+    });
+
+    buttonJoinRoom.onclick = () => {
+        socket.emit("join:room", {roomId: 1});
+    };
+
+    socket.on("user:joined", data => {
+        let h3 = document.createElement("h3");
+        h3.innerText = data.message;
+        pack.appendChild(h3)
+
+    });
+
+</script>
+
+</body>
+</html>

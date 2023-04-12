@@ -10,12 +10,14 @@
 <button id="sendMessage">send message</button>
 <button id="joinRoom1">Join room1</button>
 <button id="joinRoom2">Leave room1</button>
+<button id="unique">All</button>
 
 
 <script>
     const sendMsgBtn = document.getElementById("sendMessage");
     const joinRm1Btn = document.getElementById("joinRoom1");
     const leaveRm1Btn = document.getElementById("joinRoom2");
+    const allBtn = document.getElementById("unique");
 
   const socket = io("http://localhost:5100");
 
@@ -53,6 +55,11 @@
     socket.on("left:room", data => {
         console.log(data);
     });
+
+
+    allBtn.onclick = () => {
+        socket.emit("to:all", "send message to all test");
+    };
 
 </script>
 

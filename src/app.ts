@@ -20,7 +20,7 @@ io.on("connection", (socket) => {
   console.log(socket.id);
 
   socket.on("test:action", (data) => {
-    console.log(data);
+    console.log(data, "======================");
   });
 
   socket.emit("test:message", { message: "Hello it is first server emit!" });
@@ -41,6 +41,10 @@ io.on("connection", (socket) => {
 
     io.to(roomInfo.roomId).emit("left:room", "THIS USER LEFT ROOM!");
   });
+
+  // socket.on("to:all", (socketTest) => {
+  //   console.log(socketTest.id);
+  // });
 });
 
 app.use(express.json());

@@ -25,11 +25,6 @@ io.on("connection", (socket) => {
 
   socket.emit("test:message", { message: "Hello it is first server emit!" });
 
-  socket.on("send:message", (data) => {
-    // socket.broadcast.emit("broadcast:message", data);
-    // io.sockets.in(socket.id).emit("new_msg", { msg: "hello" });
-  });
-
   socket.on("join:room1", (roomInfo) => {
     socket.join(roomInfo.roomId);
 

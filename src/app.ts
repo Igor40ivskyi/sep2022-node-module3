@@ -1,6 +1,6 @@
 import * as http from "node:http";
 
-// import cors from "cors";
+import cors from "cors";
 import express, { Application, NextFunction, Request, Response } from "express";
 import fileUploader from "express-fileupload";
 import * as mongoose from "mongoose";
@@ -21,7 +21,7 @@ const io = new Server(server, {
   },
 });
 
-// app.use(cors());
+app.use(cors());
 
 io.on("connection", (socket: Socket) => {
   console.log(socket.id);

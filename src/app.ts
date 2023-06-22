@@ -1,5 +1,6 @@
 import * as http from "node:http";
 
+// ця гілка з бекендом для movies_web_site на ГітХабі називається lesson_12_socket_practice_2. вони зєднана з цією.
 import cors from "cors";
 import express, { Application, NextFunction, Request, Response } from "express";
 import fileUploader from "express-fileupload";

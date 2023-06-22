@@ -1,4 +1,4 @@
-import { EEmailActions, ESmsActionEnum, EUserStatus } from "../enums";
+import { EEmailActions, EUserStatus } from "../enums";
 import { EActionTokenType } from "../enums/action-token-typeEnum";
 import { ApiError } from "../errors";
 import { Action, Token, User } from "../models";
@@ -6,7 +6,6 @@ import { OldPassword } from "../models/OldPassword.model";
 import { ICredentials, ITokenPair, ITokenPayload, IUser } from "../types";
 import { emailService } from "./emailService";
 import { passwordService } from "./passwordService";
-import { smsService } from "./smsService";
 import { tokenService } from "./tokenService";
 
 class AuthService {
@@ -21,14 +20,14 @@ class AuthService {
         password: hashedPassword,
       });
 
-      Promise.all([
-        smsService.sendSms(body.phone, ESmsActionEnum.WELCOME),
-
-        emailService.sendMail(
-          "ihor.sorokivskyi.xt.2017@lpnu.ua",
-          EEmailActions.WELCOME
-        ),
-      ]);
+      // Promise.all([
+      //   smsService.sendSms(body.phone, ESmsActionEnum.WELCOME),
+      //
+      //   emailService.sendMail(
+      //     "ihor.sorokivskyi.xt.2017@lpnu.ua",
+      //     EEmailActions.WELCOME
+      //   ),
+      // ]);
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }

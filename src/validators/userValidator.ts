@@ -17,8 +17,8 @@ export class UserValidator {
     name: this.firstName.required(),
     email: this.email.required(),
     password: this.password.required(),
-    gender: this.gender.required(),
-    phone: this.phone.required(),
+    gender: this.gender,
+    phone: this.phone,
   });
 
   static updateUser = Joi.object({

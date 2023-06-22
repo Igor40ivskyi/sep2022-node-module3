@@ -3,65 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-  <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
 </head>
 <body>
 
-<button id="sendMessage">send message</button>
-<button id="joinRoom1">Join room1</button>
-<button id="joinRoom2">Leave room1</button>
-<button id="unique">All</button>
+<div class="block" ></div>
+
+<input placeholder="xxxx">
+<button>SEND MESSAGE</button>
+
+<button class="join" >JOIN ROOM</button>
+<button class="leave" >LEAVE ROOM</button>
 
 
-<script>
-    const sendMsgBtn = document.getElementById("sendMessage");
-    const joinRm1Btn = document.getElementById("joinRoom1");
-    const leaveRm1Btn = document.getElementById("joinRoom2");
-    const allBtn = document.getElementById("unique");
 
-  const socket = io("http://localhost:5100");
+<div
+        style=
+                "
 
-  socket.emit("test:action", {message: "YI yi"});
+        height: 400px;
+         width: 800px;
+          margin-top: 50px;
+           border: 2px solid dimgrey;
+"
+        class="block2"></div>
 
-  // socket.on("test:message", (data) => {
-  //     document.write(data.message);
-  // });
+<script type="module">
+    import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
 
-    sendMsgBtn.onclick = () => {
-        socket.emit("send:message","testing the first message by button!")
-    };
+    const socket = io('http://localhost:5100',
+        {
+            auth:{
+                token:"sdhfsdfisoljfljsdfhuo"
+            }
+        }
+    );
 
-    socket.on("broadcast:message", (data) => {
-        document.write(data);
+    // socket.on("message", (data) => {
+    //     console.log(data);
+    // });
+    //
+    // socket.on("user:connected", (data) => {
+    //     document.write(data.message)
+    // });
+
+    socket.on("message:get", (text) => {
+        const p = document.createElement("p");
+
+        p.innerText = text;
+        document.querySelector("div").appendChild(p);
+
     });
 
-    socket.on("new_msg", (data) => {
-        console.log(data);
-    });
+    document.querySelector("button").onclick = () => {
+        const text = document.querySelector("input").value;
+        socket.emit("message:send", text);
 
-    joinRm1Btn.onclick = () => {
-        socket.emit("join:room1", {roomId: 1});
-    };
-
-    socket.on("joined:room", data => {
-        console.log(data);
-    });
-
-    leaveRm1Btn.onclick = () => {
-        socket.emit("leave:room", {roomId: 1});
     };
 
 
-    socket.on("left:room", data => {
-        console.log(data);
+    const display = document.getElementsByClassName("block2");
+    console.log(display);
+
+    // display[0].innerText = "IT IS INT IT"
+
+    const joinRoom = document.querySelector(".join");
+    const leaveRoom = document.querySelector(".leave");
+
+
+    joinRoom.onclick = () => {
+        socket.emit("join:room",{roomId: 1})
+    };
+
+    leaveRoom.onclick = () => {
+        socket.emit("left:room", {roomId: 1,});
+    };
+
+    socket.on("user:joined", (data) => {
+        // document.write(JSON.stringify(data));
+        display[0].innerText += JSON.stringify(data);
     });
 
+    socket.on("user:left", (data) => {
+        // document.write(JSON.stringify(data));
+        display[0].innerText += JSON.stringify(data);
+    });
 
-    allBtn.onclick = () => {
-        socket.emit("to:all", "send message to all test");
-    };
 
 </script>
-
 </body>
 </html>

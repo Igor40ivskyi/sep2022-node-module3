@@ -1,9 +1,10 @@
 import * as http from "node:http";
 
-import express, { NextFunction, Request, Response } from "express";
+import cors from "cors";
+import express, { Application, NextFunction, Request, Response } from "express";
 import fileUploader from "express-fileupload";
 import * as mongoose from "mongoose";
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 
 import { configs } from "./configs";
 import { cronRunner } from "./crons";
@@ -11,35 +12,47 @@ import { ApiError } from "./errors";
 import { authRouter, carRouter } from "./routers";
 import { userRouter } from "./routers";
 
-const app = express();
+const app: Application = express();
 const server = http.createServer(app);
 
-const io = new Server(server, { cors: { origin: "http://localhost:63342" } });
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
 
-io.on("connection", (socket) => {
+app.use(cors());
+
+io.on("connection", (socket: Socket) => {
   console.log(socket.id);
 
-  socket.on("test:action", (data) => {
-    console.log(data, "======================");
+  /** Send to particular client*/
+  // socket.emit("message", { message: "HELLO SOCKET" });
+
+  //Send to all clients
+  // io.emit("user:connected", { message: "USER CONNECTED" });
+
+  //Send to all except given client
+  // socket.broadcast.emit("user:connected", { message: "User connected" });
+
+  socket.on("message:send", (data) => {
+    io.emit("message:get", `${socket.id} | ${data}`);
   });
 
-  socket.emit("test:message", { message: "Hello it is first server emit!" });
+  socket.on("join:room", ({ roomId }) => {
+    socket.join(roomId);
 
-  socket.on("join:room1", (roomInfo) => {
-    socket.join(roomInfo.roomId);
+    socket
+      .to(roomId)
+      .emit("user:joined", { socketId: socket.id, action: "Joined" });
 
-    io.to(roomInfo.roomId).emit("joined:room", "JOINED ROOM TEST MESSAGE");
+    socket.on("left:room", ({ roomId }) => {
+      socket.leave(roomId);
+      socket
+        .to(roomId)
+        .emit("user:left", { socketId: socket.id, action: "Left" });
+    });
   });
-
-  socket.on("leave:room", (roomInfo) => {
-    socket.leave(roomInfo.roomId);
-
-    io.to(roomInfo.roomId).emit("left:room", "THIS USER LEFT ROOM!");
-  });
-
-  // socket.on("to:all", (socketTest) => {
-  //   console.log(socketTest.id);
-  // });
 });
 
 app.use(express.json());

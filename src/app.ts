@@ -3,7 +3,7 @@ import * as mongoose from "mongoose";
 
 import { configs } from "./configs/config";
 import { authRouter } from "./routers/authRouter";
-import { userRouter } from "./routers/userRouter";
+import { userRouterr } from "./routers/userRouterr";
 import { IError } from "./types/commonTypes";
 
 const app = express();
@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/users", userRouter);
+app.use("/users", userRouterr);
 app.use("/auth", authRouter);
 
 //---------- ERROR HANDLER --------------

@@ -5,6 +5,7 @@ import { configs } from "./configs/config";
 import { authRouter } from "./routers/authRouter";
 import { userRouterr } from "./routers/userRouterr";
 import { IError } from "./types/commonTypes";
+import {Promise} from "mongoose";
 
 const app = express();
 
@@ -24,7 +25,28 @@ app.use((err: IError, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-app.listen(configs.PORT, async () => {
-  await mongoose.connect(configs.DB_URL);
+const connectionDB = async () => {
+  let dbCon = false;
+  while (!dbCon) {
+    try {
+      console.log('connecting to database...');
+      await mongoose.connect(configs.DB_URL);
+      dbCon = true;
+    }catch (e) {
+      console.log('Database unavailable, wait 3 seconds');
+      await new Promise((resolve: () => void) => setTimeout(resolve, 3000));
+    }
+  }
+};
+
+const start = async ()=>{
+  try {
+    await connectionDB()
+    await app.listen(configs.PORT, () => '0.0.0.0');
   console.log(`the server has started on port ${configs.PORT}`);
-});
+  }catch (e) {
+    console.log(e);
+  }
+}
+
+start();

@@ -42,7 +42,7 @@ class UserController {
       const body = req.body;
       const user = await User.create(body);
 
-      return res.status(201).json({
+      return res.status(202).json({
         message: "user created!",
         data: user,
       });
